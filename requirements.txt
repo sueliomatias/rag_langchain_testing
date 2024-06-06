@@ -1,0 +1,9 @@
+ollama 
+langchain
+langchain_community
+beautifulsoup4 
+chromadb 
+gradio
+pypdf
+faiss-cpu
+openai
