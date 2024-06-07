@@ -74,3 +74,10 @@ def rag_chain(question):
 result = rag_chain("Do que se trata o documento?")
 print(result)
 
+# loop para fazer perguntas
+while True:
+    question = input("Digite sua pergunta (ou 'exit' para sair): ")
+    if question == "exit":
+        break
+    result = rag_chain(question)
+    print(result)
