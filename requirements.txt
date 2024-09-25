@@ -7,3 +7,4 @@ gradio
 pypdf
 faiss-cpu
 openai
+dotenv

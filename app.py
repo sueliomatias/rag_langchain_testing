@@ -1,6 +1,7 @@
 from openai import OpenAI
 import ollama
 import bs4
+import os
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import WebBaseLoader
 from langchain_community.vectorstores import Chroma
@@ -8,20 +9,19 @@ from langchain.vectorstores import FAISS
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
-from langchain.document_loaders import PyPDFLoader, PyPDFDirectoryLoader
+from langchain.document_loaders import PyPDFLoader, PyPDFDirectoryLoader, JSONLoader
+from dotenv import load_dotenv
 
-BASE_URL_LOCAL = "http://10.10.8.39:11434"
-MODEL = "mistral"
+load_dotenv('.env')
 
-# carregar página web
+BASE_URL_LOCAL = os.getenv('BASE_URL_LOCAL')
+MODEL = os.getenv('MODEL')
+URL = os.getenv('URL')
+
+# carregar dados de uma api com retorno em json
 def loadWebPage(url):
     loader = WebBaseLoader(
-        web_paths=(url),
-        bs_kwargs=dict(
-            parse_only=bs4.SoupStrainer(
-                class_=("btn-second")
-            )
-        ),
+        url
     )
     docs = loader.load()
     return docs
@@ -39,7 +39,7 @@ def splitDocs(docs):
     return splits
 
 # carregar documentos e dividir em partes
-docs = loadPDF()
+docs = loadWebPage(URL)
 splits = splitDocs(docs)
 print(f"Loaded {len(splits)} documents")
 
